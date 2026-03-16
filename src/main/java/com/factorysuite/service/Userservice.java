@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class Userservice {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder; // Bean 주입
+    private final BCryptPasswordEncoder passwordEncoder; // 암호화
 
     public User register(String username, String rawPassword) {
         User user = User.builder()
@@ -22,8 +22,15 @@ public class Userservice {
     }
 
     public boolean validate(String username, String rawPassword) {
+        System.out.println("서비스>>>>유저네임"+username);
+        System.out.println("서비스>>>>유저비번"+rawPassword);
         return userRepository.findByUsername(username)
-                .map(user -> passwordEncoder.matches(rawPassword, user.getPassword()))
+                .map(user -> {
+                    System.out.println("DB 패ㅑ스워드>>>>"+user.getPassword());
+                    boolean matchresult =  passwordEncoder.matches(rawPassword, user.getPassword());
+                    System.out.println("결과값>>>>"+matchresult);
+                  return matchresult;
+                })
                 .orElse(false);
     }
 }

@@ -1,0 +1,55 @@
+package com.factorysuite.controller;
+
+import com.factorysuite.dto.CustomerDto;
+import com.factorysuite.dto.PageDto;
+import com.factorysuite.service.CustomerService;
+import com.factorysuite.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+
+@RestController
+@RequestMapping("/api/customer")
+@RequiredArgsConstructor
+public class CustomerController {
+
+    private final CustomerService customerService;
+
+    @PostMapping("/post")
+    public boolean customerInsert(@RequestBody CustomerDto customerDto) {
+
+        String customername = customerDto.getCustomerName();
+        String phone = customerDto.getPhone();
+        String address = customerDto.getAddress();
+        LocalDateTime createdate = customerDto.getCreatedDt();
+
+        boolean result = customerService.customerInsert( customerDto );
+        System.out.println("컨트롤러customername"+customername);
+        System.out.println("컨트롤러phone"+phone);
+
+        return result;
+    }
+    // 모든 회원 조회
+    @GetMapping("/get")
+    public PageDto getAll(@RequestParam int page , @RequestParam String key , @RequestParam String keyword , @RequestParam int view ){
+        System.out.println("실행한다 컨트롤러.... ");
+        System.out.println("인자값>>>>"+page+ key+ keyword + view);
+        return customerService.getAll( page , key , keyword , view);
+        //System.out.println("컨트롤러회원조회 : "+result);
+
+
+    }
+
+
+    // 회원 수정
+    @PutMapping("/put")
+    public boolean customerUpdate(@RequestBody CustomerDto customerDto){
+        boolean result = customerService.customerUpdate(customerDto);
+        //System.out.println("컨트롤러 : "+starBugMemberDto);
+        return result;
+    }
+
+
+
+}

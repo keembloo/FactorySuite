@@ -1,0 +1,88 @@
+/* ===== 헤더 ===== */
+.erp-header {
+  height: 60px;
+  background-color: #2053c2;
+  color: white;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.header-inner {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ===== 로고 ===== */
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ===== 메뉴 영역 ===== */
+.main-menu ul {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-menu li {
+  padding: 10px 18px;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: transparent;
+  transition: all 0.2s ease;
+}
+
+/* hover 효과 */
+.main-menu li:hover {
+  background-color: #10b981;
+}
+
+/* 클릭 느낌 */
+.main-menu li:active {
+  transform: translateY(1px);
+}
+
+/* 현재 활성 메뉴 */
+.main-menu .active {
+  background-color: #2563eb;
+  font-weight: 600;
+}
+
+/* ===== 사용자 영역 ===== */
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-name {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.logout-btn {
+  background-color: #ef4444;
+  border: none;
+  color: white;
+  font-size: 14px;
+  padding: 7px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #dc2626;
+}

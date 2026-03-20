@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App.jsx
+import React, { useRef, createContext } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './routes';
+import { useSnackbar } from 'notistack';
 
-function App() {
-  const [count, setCount] = useState(0)
+export const SocketContext = createContext();
+
+export default function App() {
+  const { enqueueSnackbar } = useSnackbar();
+
+  // WebSocket 초기화
+  const clientSocket = useRef(null);
+  if (!clientSocket.current) {
+    clientSocket.current = new WebSocket('ws://localhost:80/alram');
+
+    clientSocket.current.onopen = (e) => console.log('WebSocket open', e);
+    clientSocket.current.onerror = (e) => console.log('WebSocket error', e);
+    clientSocket.current.onclose = (e) => console.log('WebSocket closed', e);
+
+    clientSocket.current.onmessage = (e) => {
+      console.log('WebSocket message', e.data);
+      enqueueSnackbar(e.data, { variant: 'success' });
+    };
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <SocketContext.Provider value={clientSocket.current}>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </SocketContext.Provider>
+  );
 }
-
-export default App

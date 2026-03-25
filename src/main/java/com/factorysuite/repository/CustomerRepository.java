@@ -16,7 +16,8 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Intege
     (value="select * from customer where "+
             " if( :keyword = '' , true , "+
             " if( :key = 'customerName' , customer_name like %:keyword% , "+
-            " if( :key = 'phone' , phone like %:keyword% , true )))"
+            " if( :key = 'phone' , phone like %:keyword% , true )))" +
+            " and customer_name != '삭제된 거래처' "
             , nativeQuery = true)
     Page<CustomerEntity> findBycustomerserch(String key, String keyword, Pageable pageable);
 

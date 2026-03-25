@@ -33,8 +33,7 @@ public class CustomerController {
     // 모든 회원 조회
     @GetMapping("/get")
     public PageDto getAll(@RequestParam int page , @RequestParam String key , @RequestParam String keyword , @RequestParam int view ){
-        System.out.println("실행한다 컨트롤러.... ");
-        System.out.println("인자값>>>>"+page+ key+ keyword + view);
+        System.out.println("실행한다 조회 컨트롤러.... ");
         return customerService.getAll( page , key , keyword , view);
         //System.out.println("컨트롤러회원조회 : "+result);
 
@@ -42,14 +41,25 @@ public class CustomerController {
     }
 
 
-    // 회원 수정
+    // 거래처 수정
     @PutMapping("/put")
     public boolean customerUpdate(@RequestBody CustomerDto customerDto){
+        System.out.println("수정 컨트롤러 아이디>>>>>>"+customerDto.getCustomerId());
+        System.out.println("수정 컨트롤러 주소>>>>"+customerDto.getAddress());
         boolean result = customerService.customerUpdate(customerDto);
         //System.out.println("컨트롤러 : "+starBugMemberDto);
         return result;
     }
 
+
+
+    // 거래처 삭제
+    @DeleteMapping("/delete")
+    public boolean customerDelete(@RequestParam int customerId){
+        System.out.println("컨트롤러 : "+customerId);
+        boolean result = customerService.customerDelete(customerId);
+        return result;
+    }
 
 
 }

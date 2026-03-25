@@ -27,6 +27,7 @@ export default function AppRoutes() {
         <Route index element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
         <Route path="customer" element={<CustomerManagement />} />
+        <Route path="product" element={<Product />} />
         {/* 필요시 추가 페이지 */}
       </Route>
 

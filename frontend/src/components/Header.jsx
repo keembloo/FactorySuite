@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './header.css';
 
 function Header(){
-
+    const navigate = useNavigate();   // 🔥 이거 추가
 
     return (
 
@@ -19,8 +19,8 @@ function Header(){
                 {/* 상단 메뉴 */}
                 <nav className="main-menu">
                     <ul>
-                        <li>거래처관리</li>
-                        <li>제품관리</li>
+                        <li onClick={() => navigate('/customer')}> 거래처관리</li>
+                        <li onClick={() => navigate('/product')}>제품관리</li>
                         <li>주문관리</li>
                         <li>생산지시관리</li>
                         <li>재고관리</li>

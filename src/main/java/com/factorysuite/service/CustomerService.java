@@ -23,7 +23,7 @@ public class CustomerService {
     //  등록
     @Transactional
     public boolean customerInsert(CustomerDto customerDto){
-        //System.out.println("starBugMemberDto = " + starBugMemberDto);
+        System.out.println("customerDto = " + customerDto);
         CustomerEntity customerEntity = customerRepository.save(customerDto.customerToEntity());
         if (customerEntity.getCustomerId() >= 1){return true;}
         return false;
@@ -65,8 +65,10 @@ public class CustomerService {
     // 수정
     @Transactional
     public boolean customerUpdate( CustomerDto customerDto ){
+        System.out.println("실행한다 서비스.... 수정 ");
+        System.out.println("수정할 주소 >>>>"+customerDto.getAddress());
 
-/*        Optional<CustomerEntity> optionalEntity
+        Optional<CustomerEntity> optionalEntity
                 = customerRepository.findById(customerDto.getCustomerId());    // dto에 담긴 id를 조회
         if(optionalEntity.isPresent()){ // 있는 번호이면
             CustomerEntity customerEntity = optionalEntity.get(); // 엔티티에 있는 데이터를 꺼냄
@@ -74,7 +76,20 @@ public class CustomerService {
             customerEntity.setAddress(customerDto.getAddress());
             customerEntity.setPhone(customerDto.getPhone());
             return true;
-        }*/
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean customerDelete( int customerId ){
+
+        System.out.println("거래처삭제 서비스>>>>>"+customerId);
+        Optional<CustomerEntity> optionalEntity = customerRepository.findById(customerId); // 회원번호 조회
+        if (optionalEntity.isPresent()) { // 있는 회원번호이면
+            CustomerEntity customerEntity = optionalEntity.get(); // 엔티티에 있는 데이터를 꺼냄
+            customerEntity.setCustomerName("삭제된 거래처");  // 회원 이름을 "탈퇴한 회원"으로 저장
+            return true;
+        }
         return false;
     }
 

@@ -1,27 +1,21 @@
 package com.factorysuite.controller;
 
-import com.factorysuite.dto.CustomerDto;
+import com.factorysuite.dto.PageDto;
 import com.factorysuite.dto.ProductDto;
 import com.factorysuite.service.ProductService;
-import com.factorysuite.service.Userservice;
-import com.factorysuite.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/product")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
-    @PostMapping("/productInsert")
+    //제품 등록
+    @PostMapping("/post")
     public boolean login(@RequestBody ProductDto productDto) {
 
 
@@ -31,4 +25,34 @@ public class ProductController {
 
         return result;
     }
+
+    // 모든 제품 조회
+    @GetMapping("/get")
+    public PageDto getAll(@RequestParam int page , @RequestParam String key , @RequestParam String keyword , @RequestParam int view ){
+        System.out.println("실행한다 조회 컨트롤러.... ");
+        return productService.getAll( page , key , keyword , view);
+        //System.out.println("컨트롤러회원조회 : "+result);
+
+
+    }
+
+
+    // 제품 수정
+    @PutMapping("/put")
+    public boolean customerUpdate(@RequestBody ProductDto productDto){
+        boolean result = productService.productUpdate(productDto);
+        //System.out.println("컨트롤러 : "+starBugMemberDto);
+        return result;
+    }
+
+
+
+    // 제품 삭제
+    @DeleteMapping("/delete")
+    public boolean customerDelete(@RequestParam int productId){
+        System.out.println("컨트롤러 : "+productId);
+        boolean result = productService.productDelete(productId);
+        return result;
+    }
+
 }

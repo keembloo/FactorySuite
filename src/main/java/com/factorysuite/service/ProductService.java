@@ -1,15 +1,19 @@
 package com.factorysuite.service;
 
-import com.factorysuite.dto.CustomerDto;
+import com.factorysuite.dto.PageDto;
 import com.factorysuite.dto.ProductDto;
-import com.factorysuite.entity.CustomerEntity;
 import com.factorysuite.entity.ProductEntity;
-import com.factorysuite.repository.CustomerRepository;
 import com.factorysuite.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 @Service
 public class ProductService {
@@ -22,25 +26,70 @@ public class ProductService {
     public boolean productInsert(ProductDto productDto){
 
         ProductEntity productEntity = productRepository.save(productDto.productToEntity());
-        if (productEntity.getProductid() >= 1){return true;}
+        if (productEntity.getProductId() >= 1){return true;}
         return false;
     }
+
+    // 조회
+    @Transactional
+    public PageDto getAll(int page , String key , String keyword , int view){
+        System.out.println("실행한다 서비스.... ");
+
+        // 페이징처리위한 인터페이스 사용
+        Pageable pageable = PageRequest.of(page-1 , view , Sort.Direction.DESC ,"product_id");
+        // 1. 모든게시물 호출
+        // Sort로 "customer_id"필드 기준으로 검색후 내림차순 - 페이징처리하기 전 코드
+        Page<ProductEntity> productEntities = productRepository.findByproductserch(key , keyword , pageable );
+        // entity -> dto 변환
+        // list 객체에 선언후 담기
+        List<ProductDto> productDtos = new ArrayList<>();
+        productEntities.forEach( e ->{
+            productDtos.add(e.productToDto()); // dto로 변환
+        });
+
+        // 총페이지수
+        int totalPages = productEntities.getTotalPages();
+        // 총게시물수
+        Long totalCount = productEntities.getTotalElements();
+        // Dto로 변환
+        PageDto pageDto = PageDto.builder()
+                .productDtos(productDtos)
+                .totalPage(totalPages)
+                .totalCount(totalCount)
+                .build();
+        // System.out.println("서비스 :"+pageDto);
+
+
+        return pageDto;
+    }
+
     // 수정
     @Transactional
     public boolean productUpdate( ProductDto productDto ){
 
         Optional<ProductEntity> optionalEntity
-                = productRepository.findById(productDto.getProductid());    // dto에 담긴 회원번호를 조회
+                = productRepository.findById(productDto.getProductId());    // dto에 담긴 회원번호를 조회
         if(optionalEntity.isPresent()){ // 있는 회원번호이면
             ProductEntity productEntity = optionalEntity.get(); // 엔티티에 있는 데이터를 꺼냄
-            productEntity.setPrductname(productDto.getProductname());  // dto에 있는 데이터를 엔티티 각 필드에 맞게 저장
+            productEntity.setProductName(productDto.getProductName());  // dto에 있는 데이터를 엔티티 각 필드에 맞게 저장
             productEntity.setPrice(productDto.getPrice());
             productEntity.setCategory(productDto.getCategory());
             return true;
         }
-
-
         return false;
     }
 
+    //삭제
+    @Transactional
+    public boolean productDelete( int productId ){
+
+        System.out.println("제품삭제 서비스>>>>>"+productId);
+        Optional<ProductEntity> optionalEntity = productRepository.findById(productId); // 회원번호 조회
+        if (optionalEntity.isPresent()) { // 있는 회원번호이면
+            ProductEntity productEntity = optionalEntity.get(); // 엔티티에 있는 데이터를 꺼냄
+            productEntity.setProductName("삭제된 거래처");  // 회원 이름을 "탈퇴한 회원"으로 저장
+            return true;
+        }
+        return false;
+    }
 }

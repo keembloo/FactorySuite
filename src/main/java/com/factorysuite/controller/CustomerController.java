@@ -3,7 +3,6 @@ package com.factorysuite.controller;
 import com.factorysuite.dto.CustomerDto;
 import com.factorysuite.dto.PageDto;
 import com.factorysuite.service.CustomerService;
-import com.factorysuite.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,0 +1,144 @@
+/* Product.css */
+.customerContainer {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+.categoryArea {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid #6b7280;;
+}
+
+.categoryArea button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  /*background-color: #d1d5db;*/
+  transition: 0.2s;
+}
+
+.categoryArea button:hover {
+  background-color: #10b981;
+}
+
+.btnMember {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btnMemberInsert {
+  background-color: #6c6f74;
+  color: white;
+}
+
+.contentArea {
+  padding: 16px;
+}
+
+/* ===== 검색 영역 ===== */
+.search-panel {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-panel form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.search-panel select,
+.search-panel input {
+  padding: 7px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  font-size: 13px;
+}
+
+.search-panel input {
+  width: 220px;
+}
+
+.search-panel button {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.search-panel button[type="submit"] {
+  background-color: #2563eb;
+  color: white;
+}
+
+.search-panel button[type="button"] {
+  background-color: #6b7280;
+  color: white;
+}
+
+/* ===== 테이블 영역 ===== */
+.table-panel {
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  overflow: hidden;
+  height : 300px;
+}
+
+.table-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table-panel thead {
+  background-color: #f9fafb;
+}
+
+.table-panel th,
+.table-panel td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.table-panel th {
+  font-weight: 600;
+}
+
+.table-panel tbody tr:hover {
+  background-color: #f3f4f6;
+}
+
+.table-panel button {
+  padding: 4px 8px;
+  font-size: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+.table-panel button:first-child {
+  background-color: #2563eb;
+  color: white;
+}
+
+.table-panel button:last-child {
+  background-color: #ef4444;
+  color: white;
+}

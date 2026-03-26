@@ -1,5 +1,6 @@
 package com.factorysuite.entity;
 
+import com.factorysuite.dto.ProductDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,11 +21,11 @@ public class ProductEntity extends BaseTime {
     @Id
     @Column(name = "product_id" , nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int productid;
+    private int productId;
 
     // 제품이름
     @Column(name = "product_name", nullable = false)
-    private String prductname;
+    private String productName;
 
     // 제품가격
     @Column(name = "price", nullable = false)
@@ -34,9 +35,25 @@ public class ProductEntity extends BaseTime {
     @Column(name = "category", nullable = false)
     private String category;
 
+    // 제품판매여부
+    @Column(name = "for_sale", nullable = false)
+    private String forSale;
 
-    //거래처리스트
-/*    @Builder.Default
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productEntity", cascade = CascadeType.ALL)
-    private List<CustomerEntity> customerEntities = new ArrayList<>();*/
+    // 제품삭제여부
+    @Column(name = "delete_state", nullable = false)
+    private String deleteState;
+
+
+    public ProductDto productToDto() {
+        // 거래처 등록, 수정, 삭제를 위한 dto
+        return ProductDto.builder()
+                .productId(this.productId)
+                .productName(this.productName)
+                .price(this.price)
+                .category(this.category)
+                .forSale(this.forSale)
+                .deleteState(this.deleteState)
+                .build();
+
+    }
 }

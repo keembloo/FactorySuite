@@ -31,14 +31,14 @@ public class CustomerService {
 
     // 조회
     @Transactional
-    public PageDto getAll(int page , String key , String keyword , int view){
+    public PageDto getAll(int page , String key , String keyword , int view ){
         System.out.println("실행한다 서비스.... ");
 
         // 페이징처리위한 인터페이스 사용
         Pageable pageable = PageRequest.of(page-1 , view , Sort.Direction.DESC ,"customer_id");
         // 1. 모든게시물 호출
         // Sort로 "customer_id"필드 기준으로 검색후 내림차순 - 페이징처리하기 전 코드
-        Page<CustomerEntity> customerEntities = customerRepository.findBycustomerserch(key , keyword , pageable );
+        Page<CustomerEntity> customerEntities = customerRepository.findBycustomerserch( key, keyword, pageable);
         // entity -> dto 변환
         // list 객체에 선언후 담기
         List<CustomerDto> customerDtos = new ArrayList<>();

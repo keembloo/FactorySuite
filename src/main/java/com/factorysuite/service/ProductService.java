@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,22 +25,29 @@ public class ProductService {
     //  등록
     @Transactional
     public boolean productInsert(ProductDto productDto){
+        ProductEntity entity = productDto.productToEntity();
+        // 등록시 삭제여부 기본값 "N"설정
+        entity.setDeleteState("N");
 
-        ProductEntity productEntity = productRepository.save(productDto.productToEntity());
+        ProductEntity productEntity = productRepository.save(entity);
         if (productEntity.getProductId() >= 1){return true;}
         return false;
     }
 
     // 조회
     @Transactional
-    public PageDto getAll(int page , String key , String keyword , int view){
+    public PageDto getAll( int page, String keyword ,  int view,  String category,  String forSale){
         System.out.println("실행한다 서비스.... ");
+
+        keyword = (keyword == null) ? "" : keyword;
+        category = (category == null) ? "" : category;
+        forSale = (forSale == null) ? "" : forSale;
 
         // 페이징처리위한 인터페이스 사용
         Pageable pageable = PageRequest.of(page-1 , view , Sort.Direction.DESC ,"product_id");
         // 1. 모든게시물 호출
-        // Sort로 "customer_id"필드 기준으로 검색후 내림차순 - 페이징처리하기 전 코드
-        Page<ProductEntity> productEntities = productRepository.findByproductserch(key , keyword , pageable );
+        // Sort로 "product_id"필드 기준으로 검색후 내림차순 - 페이징처리하기 전 코드
+        Page<ProductEntity> productEntities = productRepository.findByproductserch(keyword, category, forSale, pageable);
         // entity -> dto 변환
         // list 객체에 선언후 담기
         List<ProductDto> productDtos = new ArrayList<>();
@@ -68,8 +76,8 @@ public class ProductService {
     public boolean productUpdate( ProductDto productDto ){
 
         Optional<ProductEntity> optionalEntity
-                = productRepository.findById(productDto.getProductId());    // dto에 담긴 회원번호를 조회
-        if(optionalEntity.isPresent()){ // 있는 회원번호이면
+                = productRepository.findById(productDto.getProductId());    // dto에 담긴 번호를 조회
+        if(optionalEntity.isPresent()){ // 있는 번호이면
             ProductEntity productEntity = optionalEntity.get(); // 엔티티에 있는 데이터를 꺼냄
             productEntity.setProductName(productDto.getProductName());  // dto에 있는 데이터를 엔티티 각 필드에 맞게 저장
             productEntity.setPrice(productDto.getPrice());
@@ -87,7 +95,7 @@ public class ProductService {
         Optional<ProductEntity> optionalEntity = productRepository.findById(productId); // 회원번호 조회
         if (optionalEntity.isPresent()) { // 있는 회원번호이면
             ProductEntity productEntity = optionalEntity.get(); // 엔티티에 있는 데이터를 꺼냄
-            productEntity.setProductName("삭제된 거래처");  // 회원 이름을 "탈퇴한 회원"으로 저장
+            productEntity.setDeleteState("Y");  // 삭제 여부를 "Y"로 저장
             return true;
         }
         return false;

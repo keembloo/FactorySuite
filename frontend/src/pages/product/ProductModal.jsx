@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import { Select, MenuItem } from '@mui/material';
 
 const style = {
   position: 'absolute',
@@ -84,13 +85,18 @@ function ProductModal({ open, setOpen, onSave , data }) {
             fullWidth
           />
 
-          <TextField
-            label="카테고리"
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            fullWidth
-          />
+
+         <Select
+           name="category"
+           value={form.category}
+           onChange={handleChange}
+           fullWidth
+           displayEmpty
+         >
+          <MenuItem value="">카테고리 선택</MenuItem>
+          <MenuItem value="상의">상의</MenuItem>
+          <MenuItem value="하의">하의</MenuItem>
+         </Select>
 
           <TextField
             label="가격"
@@ -99,20 +105,17 @@ function ProductModal({ open, setOpen, onSave , data }) {
             onChange={handleChange}
             fullWidth
           />
-        <select  label="판매유무"
-                            name="forSale"
-
-                                        onChange={handleChange}>
-            <option value="Y">판매중</option>
-            <option value="N">판매종료</option>
-        </select>
-         <TextField
-            label="판매유무"
-            name="forSale"
-            value={form.forSale}
-            onChange={handleChange}
-            fullWidth
-          />
+       <Select
+         name="forSale"
+         value={form.forSale}
+         onChange={handleChange}
+         fullWidth
+         displayEmpty
+       >
+         <MenuItem value="">판매유무 선택</MenuItem>
+         <MenuItem value="Y">판매중</MenuItem>
+         <MenuItem value="N">판매종료</MenuItem>
+       </Select>
 
           <Stack direction="row" spacing={1} justifyContent="flex-end" mt={2}>
             <Button variant="outlined" onClick={handleClose}>

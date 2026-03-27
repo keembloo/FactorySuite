@@ -9,14 +9,14 @@ import ProductModal from './ProductModal';
 
 function Product() {
 
-    const [key, setKey] = useState('productName');
     const [keyword, setKeyword] = useState('');
     const [list, setList] = useState([]);
     const [open, setOpen] = useState(false);
     const count = useStore(s => s.count);
     const increase = useStore(s => s.increase);
     const [selectedProduct, setSelectedProduct] = useState(null);
-
+    const [forSale, setForSale] = useState('');   // 판매중여부 Y, N
+    const [category, setCategory] = useState(''); // 카테고리 상의, 하의
     // 페이징처리 위한 상태변수 전달받은객체
     let [ pageDto , setPageDto ] = useState({
         productDtos : [] ,
@@ -26,13 +26,14 @@ function Product() {
 
     // 페이징처리 위한 페이지 번호 상태변수 전달할 객체
     const [ pageInfo , setPageInfo ] = useState({
-        page : 1 , key : 'productName' , keyword : '' , view : 10 // view 초기값 10
+        page : 1 , forSale : '', category : '', keyword : '' , view : 10 // view 초기값 10
     });
 
 
     // 조회 함수
     const fetchProduct = () => {
-        getProduct(pageInfo.page, pageInfo.key, pageInfo.keyword, pageInfo.view)
+        console.log("pageInfo:", pageInfo);
+        getProduct(pageInfo.page, pageInfo.keyword, pageInfo.view ,pageInfo.category , pageInfo.forSale)
         .then(res =>
             {console.log(res.data); setPageDto(res.data);})
         .catch(err => console.error(err));
@@ -41,7 +42,7 @@ function Product() {
     // 처음 전체조회
     useEffect(() => {
         fetchProduct();
-    }, [pageInfo.page, pageInfo.key, pageInfo.keyword, pageInfo.view]);
+    }, [pageInfo.page, pageInfo.keyword, pageInfo.view, pageInfo.category, pageInfo.forSale]);
 
 
     // 검색
@@ -50,8 +51,9 @@ function Product() {
         setPageInfo(prev => ({
             ...prev,
             page: 1,
-            key: key,
-            keyword: keyword
+            keyword: keyword ,
+            forSale: forSale,
+            category: category
         }));
     };
 
@@ -84,10 +86,10 @@ function Product() {
 
     // 제품 (삭제)판매 상태 함수
     const productDelete = (productId)=>{
-        console.log("판매중지");
-        if(window.confirm('정말 판매중지 하시겠습니까.')) {
+        console.log("제품삭제");
+        if(window.confirm('정말 삭제 하시겠습니까.')) {
 
-            deleteProduct(productrId)
+            deleteProduct(productId)
             .then(res =>
                 {console.log(res.data);
                   setPageDto(res.data);
@@ -113,26 +115,30 @@ function Product() {
       {/* 검색 영역 */}
       <div className="search-panel">
         <form onSubmit={productSearch}>
-          <select
-            name="key"
-            value={key}
-            onChange={e => setKey(e.target.value)}
-          >
-            <option value="productName">제품명</option>
-            <option value="category">카테고리</option>
-            <option value="forSale">판매여부</option>
-          </select>
 
           <input
             type="text"
             name="keyword"
-            placeholder="검색어 입력"
+            placeholder="제품명 검색"
             value={keyword}
             onChange={e => setKeyword(e.target.value)}
           />
 
+          <select value={forSale} onChange={e => setForSale(e.target.value)}>
+            <option value="">판매여부 전체</option>
+            <option value="Y">판매중</option>
+            <option value="N">판매종료</option>
+          </select>
+
+          <select value={category} onChange={e => setCategory(e.target.value)}>
+            <option value="">카테고리 전체</option>
+            <option value="상의">상의</option>
+            <option value="하의">하의</option>
+          </select>
+
           <button type="submit">검색</button>
         </form>
+
         <button onClick={handleOpenRegister}>제품 등록</button>
       </div>
 
@@ -147,6 +153,7 @@ function Product() {
               <th>가격</th>
               <th>판매여부</th>
               <th>생성일</th>
+              <th>관리</th>
             </tr>
           </thead>
 
@@ -156,7 +163,7 @@ function Product() {
                 <td>{item.productId}</td>
                 <td>{item.productName}</td>
                 <td>{item.category}</td>
-                <td>{item.price}</td>
+                <td>{item.price}원</td>
                 <td>{item.forSale=='Y' ? '판매중' : '판매종료'}</td>
                 <td>{item.createdDt}</td>
                 <td>

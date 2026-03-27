@@ -1,9 +1,9 @@
 import api from './axios';
 
 // 전체 조회 + 검색
-export const getProduct = (page, key, keyword, view) =>
+export const getProduct = (page, keyword, view, category, forSale) =>
     api.get('/product/get', {
-        params: { page, key, keyword, view }
+        params: { page, keyword, view, category, forSale }
     });
 
 // 제품 등록

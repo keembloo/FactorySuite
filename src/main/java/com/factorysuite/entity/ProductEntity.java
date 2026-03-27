@@ -53,6 +53,8 @@ public class ProductEntity extends BaseTime {
                 .category(this.category)
                 .forSale(this.forSale)
                 .deleteState(this.deleteState)
+                .createdDt(this.getCreatedDt())
+                .updatedDt(this.getUpdatedDt())
                 .build();
 
     }

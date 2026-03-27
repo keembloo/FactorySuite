@@ -28,9 +28,11 @@ public class ProductController {
 
     // 모든 제품 조회
     @GetMapping("/get")
-    public PageDto getAll(@RequestParam int page , @RequestParam String key , @RequestParam String keyword , @RequestParam int view ){
+    public PageDto getAll(@RequestParam int page,
+                          @RequestParam String keyword , @RequestParam int view,
+                          @RequestParam  String category,  @RequestParam String forSale){
         System.out.println("실행한다 조회 컨트롤러.... ");
-        return productService.getAll( page , key , keyword , view);
+        return productService.getAll( page , keyword , view, category , forSale);
         //System.out.println("컨트롤러회원조회 : "+result);
 
 

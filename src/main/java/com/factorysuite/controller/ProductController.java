@@ -1,10 +1,13 @@
 package com.factorysuite.controller;
 
+import com.factorysuite.dto.CustomerDto;
 import com.factorysuite.dto.PageDto;
 import com.factorysuite.dto.ProductDto;
 import com.factorysuite.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -38,6 +41,15 @@ public class ProductController {
 
     }
 
+    // 제품 리스트 조회
+    @GetMapping("/getlist")
+    public List<ProductDto> getList( ){
+        System.out.println("실행한다 조회 컨트롤러.... ");
+        return productService.getList();
+        //System.out.println("컨트롤러회원조회 : "+result);
+
+
+    }
 
     // 제품 수정
     @PutMapping("/put")

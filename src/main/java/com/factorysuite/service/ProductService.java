@@ -1,7 +1,9 @@
 package com.factorysuite.service;
 
+import com.factorysuite.dto.CustomerDto;
 import com.factorysuite.dto.PageDto;
 import com.factorysuite.dto.ProductDto;
+import com.factorysuite.entity.CustomerEntity;
 import com.factorysuite.entity.ProductEntity;
 import com.factorysuite.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +72,24 @@ public class ProductService {
 
         return pageDto;
     }
+
+
+    // 제품 리스트 조회
+    @Transactional
+    public List<ProductDto> getList( ){
+        System.out.println("실행한다 서비스.... ");
+        // 1. 전체 조회
+        List<ProductEntity> productEntities = productRepository.findAll();
+        // 2. DTO 리스트 생성
+        List<ProductDto> productDtos = new ArrayList<>();
+
+        // 3. entity → dto 변환
+        for (ProductEntity e : productEntities) {
+            productDtos.add(e.productToDto());
+        }
+        return productDtos;
+    }
+
 
     // 수정
     @Transactional

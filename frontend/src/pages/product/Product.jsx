@@ -105,91 +105,91 @@ function Product() {
     }
 
 
-  return (
-    <div className="bodyContainer">
+    return (
+        <div className="bodyContainer">
 
-      <div className="page-header">
-        <h2>제품 관리</h2>
-      </div>
+            <div className="page-header">
+                <h2>제품 관리</h2>
+            </div>
 
-      {/* 검색 영역 */}
-      <div className="search-panel">
-        <form onSubmit={productSearch}>
+            {/* 검색 영역 */}
+            <div className="search-panel">
+                <form onSubmit={productSearch}>
 
-          <input
-            type="text"
-            name="keyword"
-            placeholder="제품명 검색"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-          />
+                    <input
+                        type="text"
+                        name="keyword"
+                        placeholder="제품명 검색"
+                        value={keyword}
+                        onChange={e => setKeyword(e.target.value)}
+                    />
 
-          <select value={forSale} onChange={e => setForSale(e.target.value)}>
-            <option value="">판매여부 전체</option>
-            <option value="Y">판매중</option>
-            <option value="N">판매종료</option>
-          </select>
+                    <select value={forSale} onChange={e => setForSale(e.target.value)}>
+                        <option value="">판매여부 전체</option>
+                        <option value="Y">판매중</option>
+                        <option value="N">판매종료</option>
+                    </select>
 
-          <select value={category} onChange={e => setCategory(e.target.value)}>
-            <option value="">카테고리 전체</option>
-            <option value="상의">상의</option>
-            <option value="하의">하의</option>
-          </select>
+                    <select value={category} onChange={e => setCategory(e.target.value)}>
+                        <option value="">카테고리 전체</option>
+                        <option value="상의">상의</option>
+                        <option value="하의">하의</option>
+                    </select>
 
-          <button type="submit">검색</button>
-        </form>
+                    <button type="submit">검색</button>
+                </form>
 
-        <button onClick={handleOpenRegister}>제품 등록</button>
-      </div>
+                    <button onClick={handleOpenRegister}>제품 등록</button>
+            </div>
 
-      {/* 테이블 */}
-      <div className="table-panel">
-        <table>
-          <thead>
-            <tr>
-              <th>번호</th>
-              <th>제품명</th>
-              <th>카테고리</th>
-              <th>가격</th>
-              <th>판매여부</th>
-              <th>생성일</th>
-              <th>관리</th>
-            </tr>
-          </thead>
+            {/* 테이블 */}
+            <div className="table-panel">
+                <table>
+                    <thead>
+                        <tr>
+                        <th>번호</th>
+                        <th>제품명</th>
+                        <th>카테고리</th>
+                        <th>가격</th>
+                        <th>판매여부</th>
+                        <th>생성일</th>
+                        <th>관리</th>
+                        </tr>
+                    </thead>
 
-          <tbody>
-            {pageDto.productDtos && pageDto?.productDtos?.map((item, idx) => (
-              <tr key={item.productId}>
-                <td>{item.productId}</td>
-                <td>{item.productName}</td>
-                <td>{item.category}</td>
-                <td>{item.price}원</td>
-                <td>{item.forSale=='Y' ? '판매중' : '판매종료'}</td>
-                <td>{item.createdDt}</td>
-                <td>
-                  <button onClick={() => handleOpenUpdate(item)}>수정</button>
-                  <button onClick={() => productDelete(item.productId)}>삭제</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    <div className="pagination">
-      <Pagination
-        count={pageDto.totalPage}
-        page={pageInfo.page}
-        onChange={onPageSelect}
-      />
-    </div>
-    <ProductModal
-        open={open}
-        setOpen={setOpen}
-        onSave={handleSaveOrUpdate}
-        data={selectedProduct}
-    />
-    </div>
-  );
+                    <tbody>
+                        {pageDto.productDtos && pageDto?.productDtos?.map((item, idx) => (
+                            <tr key={item.productId}>
+                                <td>{item.productId}</td>
+                                <td>{item.productName}</td>
+                                <td>{item.category}</td>
+                                <td>{item.price}원</td>
+                                <td>{item.forSale=='Y' ? '판매중' : '판매종료'}</td>
+                                <td>{item.createdDt}</td>
+                                <td>
+                                    <button onClick={() => handleOpenUpdate(item)}>수정</button>
+                                    <button onClick={() => productDelete(item.productId)}>삭제</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="pagination">
+                <Pagination
+                    count={pageDto.totalPage}
+                    page={pageInfo.page}
+                    onChange={onPageSelect}
+                />
+            </div>
+            <ProductModal
+                open={open}
+                setOpen={setOpen}
+                onSave={handleSaveOrUpdate}
+                data={selectedProduct}
+            />
+        </div>
+    );
 }
 
 export default Product;

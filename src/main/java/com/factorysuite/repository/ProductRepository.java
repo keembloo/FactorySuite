@@ -18,13 +18,13 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
                     "(:keyword = '' or product_name like %:keyword%) " +
                     "and (:category = '' or category = :category) " +
                     "and (:forSale = '' or for_sale = :forSale)" +
-                    "and delete_state != 'Y'" ,
+                    "and delete_state = 'N'" ,
             countQuery =
                     "select count(*) from product where " +
                             "(:keyword = '' or product_name like %:keyword%) " +
                             "and (:category = '' or category = :category) " +
                             "and (:forSale = '' or for_sale = :forSale)" +
-                            "and delete_state != 'Y'" ,
+                            "and delete_state = 'N'" ,
             nativeQuery = true)
     Page<ProductEntity> findByproductserch(String keyword, String category, String forSale, Pageable pageable);
 }

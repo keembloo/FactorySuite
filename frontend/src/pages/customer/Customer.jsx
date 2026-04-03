@@ -103,82 +103,82 @@ function Customer() {
     }
 
 
-  return (
-    <div className="bodyContainer">
+    return (
+        <div className="bodyContainer">
 
-      <div className="page-header">
-        <h2>거래처 관리</h2>
-      </div>
+            <div className="page-header">
+                <h2>거래처 관리</h2>
+            </div>
 
-      {/* 검색 영역 */}
-      <div className="search-panel">
-        <form onSubmit={customerSearch}>
-          <select
-            name="key"
-            value={key}
-            onChange={e => setKey(e.target.value)}
-          >
-            <option value="customerName">거래처명</option>
-            <option value="phone">전화번호</option>
-          </select>
+            {/* 검색 영역 */}
+            <div className="search-panel">
+                <form onSubmit={customerSearch}>
+                    <select
+                        name="key"
+                        value={key}
+                        onChange={e => setKey(e.target.value)}
+                    >
+                        <option value="customerName">거래처명</option>
+                        <option value="phone">전화번호</option>
+                    </select>
 
-          <input
-            type="text"
-            name="keyword"
-            placeholder="검색어 입력"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-          />
+                    <input
+                        type="text"
+                        name="keyword"
+                        placeholder="검색어 입력"
+                        value={keyword}
+                        onChange={e => setKeyword(e.target.value)}
+                    />
 
-          <button type="submit">검색</button>
-        </form>
-        <button onClick={handleOpenRegister}>신규 등록</button>
-      </div>
+                    <button type="submit">검색</button>
+                </form>
+                <button onClick={handleOpenRegister}>신규 등록</button>
+            </div>
 
-      {/* 테이블 */}
-      <div className="table-panel">
-        <table>
-          <thead>
-            <tr>
-              <th>번호</th>
-              <th>거래처명</th>
-              <th>전화번호</th>
-              <th>주소</th>
-              <th>관리</th>
-            </tr>
-          </thead>
+            {/* 테이블 */}
+            <div className="table-panel">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>거래처명</th>
+                            <th>전화번호</th>
+                            <th>주소</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
 
-          <tbody>
-            {pageDto.customerDtos && pageDto?.customerDtos?.map((item, idx) => (
-              <tr key={item.customerId}>
-                <td>{item.customerId}</td>
-                <td>{item.customerName}</td>
-                <td>{item.phone}</td>
-                <td>{item.address}</td>
-                <td>
-                  <button onClick={() => handleOpenUpdate(item)}>수정</button>
-                  <button onClick={() => customerDelete(item.customerId)}>삭제</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    <div className="pagination">
-      <Pagination
-        count={pageDto.totalPage}
-        page={pageInfo.page}
-        onChange={onPageSelect}
-      />
-    </div>
-    <CustomerModal
-        open={open}
-        setOpen={setOpen}
-        onSave={handleSaveOrUpdate}
-        data={selectedCustomer}
-    />
-    </div>
-  );
+                    <tbody>
+                    {pageDto.customerDtos && pageDto?.customerDtos?.map((item, idx) => (
+                        <tr key={item.customerId}>
+                            <td>{item.customerId}</td>
+                            <td>{item.customerName}</td>
+                            <td>{item.phone}</td>
+                            <td>{item.address}</td>
+                            <td>
+                                <button onClick={() => handleOpenUpdate(item)}>수정</button>
+                                <button onClick={() => customerDelete(item.customerId)}>삭제</button>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="pagination">
+                <Pagination
+                    count={pageDto.totalPage}
+                    page={pageInfo.page}
+                    onChange={onPageSelect}
+                />
+            </div>
+            <CustomerModal
+                open={open}
+                setOpen={setOpen}
+                onSave={handleSaveOrUpdate}
+                data={selectedCustomer}
+            />
+        </div>
+    );
 }
 
 export default Customer;

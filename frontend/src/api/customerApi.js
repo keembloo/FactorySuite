@@ -4,7 +4,8 @@ import api from './axios';
 export const getCustomer = (page, key, keyword, view) =>
     api.get('/customer/get', {
         params: { page, key, keyword, view }
-    });
+    }
+);
 
 // 거래처 등록
 export const createCustomer = (data) =>
@@ -18,4 +19,9 @@ export const putCustomer = (data) =>
 export const deleteCustomer = (customerId) =>
     api.delete(`/customer/delete`, {
         params: { customerId }
-    });
+    }
+);
+
+// select 선택용 거래처목록
+export const getCustomerList = () =>
+    api.get('/customer/getlist');

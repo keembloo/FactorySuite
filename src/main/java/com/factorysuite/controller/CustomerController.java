@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/customer")
@@ -39,7 +40,13 @@ public class CustomerController {
 
     }
 
+    // 거래처 리스트 조회
+    @GetMapping("/getlist")
+    public List<CustomerDto> getList( ){
+        return customerService.getList();
 
+
+    }
     // 거래처 수정
     @PutMapping("/put")
     public boolean customerUpdate(@RequestBody CustomerDto customerDto){

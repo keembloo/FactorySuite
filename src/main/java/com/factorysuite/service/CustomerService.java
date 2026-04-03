@@ -2,6 +2,7 @@ package com.factorysuite.service;
 
 import com.factorysuite.dto.PageDto;
 import com.factorysuite.entity.CustomerEntity;
+import com.factorysuite.entity.ProductEntity;
 import com.factorysuite.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,6 +61,23 @@ public class CustomerService {
 
 
         return pageDto;
+    }
+
+
+    // 거래처 리스트 조회
+    @Transactional
+    public List<CustomerDto> getList( ){
+        System.out.println("실행한다 서비스.... ");
+        // 1. 전체 조회
+        List<CustomerEntity> customerEntities = customerRepository.findBycustomerlist();
+        // 2. DTO 리스트 생성
+        List<CustomerDto> customerDtos = new ArrayList<>();
+
+        // 3. entity → dto 변환
+        for (CustomerEntity e : customerEntities) {
+            customerDtos.add(e.customerToDto());
+        }
+        return customerDtos;
     }
 
     // 수정

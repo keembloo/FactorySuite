@@ -13,7 +13,8 @@ import lombok.*;
 @ToString
 @Builder
 public class OrderDto {
-    private int orderId; // 주문번호
+    private int orderId; // 주문ID
+    private String orderNum; //주문번호
     private String status; // 주문상태
     private String deleteState; // 주문 삭제여부
     private LocalDateTime orderDt; // 주문일시
@@ -25,6 +26,7 @@ public class OrderDto {
     public OrderEntity orderToEntity(){
         return OrderEntity.builder()
                 .orderId(this.orderId)
+                .orderNum(this.orderNum)
                 .status(this.status)
                 .deleteState(this.deleteState)
                 .build();

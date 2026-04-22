@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import java.time.LocalDateTime;
 
 @Repository
 public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
@@ -43,5 +44,11 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
                                        String status, String startDate,
                                        String endDate, Pageable pageable);
 
+
+    @Query
+            (value ="select count(*) from orders o "+
+                    "where o.created_dt BETWEEN :start AND :end ",
+                    nativeQuery = true)
+                   int countByToday(LocalDateTime start, LocalDateTime end);
 
 }

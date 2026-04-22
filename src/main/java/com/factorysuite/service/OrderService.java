@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -50,6 +51,17 @@ public class OrderService {
 
             // 주문에 customer 저장
             entity.setCustomerEntity(customer);
+
+            // 오늘 주문 개수 조회
+            LocalDate today = LocalDate.now();
+            LocalDateTime start = today.atStartOfDay();
+            LocalDateTime end = today.atTime(23, 59, 59);
+            int orderCount = orderRepository.countByToday(start , end);
+            System.out.println("서비스 orderCount:>>>>>>> "+orderCount);
+            // 주문에 주문번호 생성하여 저장
+            String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            entity.setOrderNum("ORDMES" + date + String.format("%06d", orderCount + 1));
+
 
             // 주문 저장
             OrderEntity savedOrder = orderRepository.save(entity);
@@ -136,6 +148,7 @@ public class OrderService {
             // OrderDto를 빌더 패턴으로 생성후 반환
             return OrderDto.builder()
                     .orderId(orderEntity.getOrderId())
+                    .orderNum(orderEntity.getOrderNum())
                     .status(orderEntity.getStatus())
                     .orderDt(orderEntity.getCreatedDt())
                     .customerId(orderEntity.getCustomerEntity().getCustomerId())

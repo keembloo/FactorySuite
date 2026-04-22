@@ -83,11 +83,6 @@ function Order() {
         setOpen(true);             // 모달 열기
     };
 
-    //수정 버튼 클릭 핸들러 (item 데이터를 인자로 받음)
-    const handleOpenUpdate = (item) => {
-        setSelectedOrder(item); // 클릭한 행의 데이터를 저장하고
-        setOpen(true);             // 모달 열기
-    };
 
     //  저장/수정 처리 함수
     const handleSaveOrUpdate = async (formData) => {
@@ -141,6 +136,25 @@ function Order() {
         // 다가져오면 가져온 데이터 전달하여 상태저장
         setCustomers(customerRes.data);
         setProducts(productRes.data);
+    };
+
+    // 주문번호 출력시 하이픈 표시 함수
+    const formatOrderNum = (orderNum) => {
+        if (!orderNum) return '';
+
+        const prefix1 = orderNum.substring(0, 3);   // ORD
+        const prefix2 = orderNum.substring(3, 6);   // MES
+        const date = orderNum.substring(6, 14);    // 20260420
+        const seq = orderNum.substring(14);        // 0001
+
+        return `${prefix1}-${prefix2}-${date}-${seq}`;
+    };
+
+    // 주문일시 초까지만 표시 함수
+    const formatDateTime = (dateString) => {
+        if (!dateString) return '';
+
+        return dateString.replace('T', ' ').substring(0, 19);
     };
 
     return (
@@ -211,15 +225,14 @@ function Order() {
                             <React.Fragment key={item.orderId} >
 
                             <tr key={item.orderId} onClick={() => toggleRow(item.orderId)}>
-                                <td>{item.orderId}</td>
+                                <td>{formatOrderNum(item.orderNum)}</td>
                                 <td>{item.customerName}</td>
-                                <td>{item.orderDt}</td>
+                                <td>{formatDateTime(item.orderDt)}</td>
                                 <td>{item.price}원</td>
                                 <td>{item.status}</td>
                                 <td>
-                                    <button onClick={(e) => { e.stopPropagation(); handleOpenUpdate(item); }}>승인</button>
-                                    <button onClick={(e) => { e.stopPropagation(); handleOpenUpdate(item); }}>상태변경</button>
-                                    <button onClick={(e) => { e.stopPropagation(); orderDelete(item.orderId); }}>취소</button>
+                                    <button onClick={(e) => { e.stopPropagation(); handleOpenUpdate(item); }}>주문승인</button>
+                                    <button onClick={(e) => { e.stopPropagation(); orderDelete(item.orderId); }}>주문취소</button>
                                 </td>
                             </tr>
 

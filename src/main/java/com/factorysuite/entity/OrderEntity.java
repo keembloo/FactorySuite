@@ -18,11 +18,15 @@ import java.util.List;
 @ToString(exclude = "orderItemEntities")
 @Builder
 public class OrderEntity extends BaseTime{
-    // 주문번호
+    // 주문ID
     @Id
     @Column(name = "order_id" , nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
+
+    // 주문 번호 (String)
+    @Column(name = "order_num" , nullable = false)
+    private String orderNum;
 
     // 주문상태
     @Column(name = "status", nullable = false)
@@ -47,6 +51,7 @@ public class OrderEntity extends BaseTime{
     public OrderDto orderToDto() {
         return OrderDto.builder()
                 .orderId(this.orderId)
+                .orderNum(this.orderNum)
                 .status(this.status)
                 .deleteState(this.deleteState)
                 .orderDt(this.getCreatedDt())

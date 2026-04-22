@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
@@ -27,4 +27,14 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
                             "and delete_state = 'N'" ,
             nativeQuery = true)
     Page<ProductEntity> findByproductserch(String keyword, String category, String forSale, Pageable pageable);
+
+
+
+    @Query(value =
+            "select * from product where " +
+                    "delete_state = 'N' " +
+                    "and for_sale = 'Y'" ,
+            nativeQuery = true)
+    List<ProductEntity> findByproductList();
+
 }

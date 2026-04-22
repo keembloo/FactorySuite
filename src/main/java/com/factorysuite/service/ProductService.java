@@ -79,7 +79,7 @@ public class ProductService {
     public List<ProductDto> getList( ){
         System.out.println("실행한다 서비스.... ");
         // 1. 전체 조회
-        List<ProductEntity> productEntities = productRepository.findAll();
+        List<ProductEntity> productEntities = productRepository.findByproductList();
         // 2. DTO 리스트 생성
         List<ProductDto> productDtos = new ArrayList<>();
 

@@ -18,6 +18,8 @@ public class OrderItemDto {
     private int quantity; // 주문수량
     private int productId; // 제품번호
     private int orderId; // 주문번호
+    private String productName; //제품이름
+    private int price; //가격
 
     public OrderItemEntity orderItemToEntity(){
         return OrderItemEntity.builder()

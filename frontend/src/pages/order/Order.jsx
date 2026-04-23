@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { createOrder, getOrder, putOrder, deleteOrder } from '../../api/orderApi';
+import { createOrder, getOrder, putOrder, deleteOrder , getOrderDetail } from '../../api/orderApi';
 import { getProductList } from '../../api/productApi';
 import { getCustomerList } from '../../api/customerApi';
 import './Order.css';
@@ -11,7 +11,7 @@ import OrderModal from './OrderModal';
 
 function Order() {
     // 검색시 사용
-    const [key, setKey] = useState('');
+    const [key, setKey] = useState('orderNum');
     const [keyword, setKeyword] = useState('');
     //주문 리스트
     const [list, setList] = useState([]);
@@ -26,6 +26,9 @@ function Order() {
 
     //상세페이지 보기 토글
     const [openRow, setOpenRow] = useState(null);
+    //상세페이지 상태
+    const [orderItemMap, setOrderItemMap] = useState({});
+
     //거래처 , 상품 리스트
     const [customers, setCustomers] = useState([]);
     const [products, setProducts] = useState([]);
@@ -45,7 +48,7 @@ function Order() {
     // 최초1번+페이지 변경시 실행
     useEffect(() => {
         fetchOrder();
-    }, [pageInfo.page, pageInfo.key, pageInfo.keyword, pageInfo.view]);
+    }, [pageInfo.page, pageInfo.key, pageInfo.keyword, pageInfo.status, pageInfo.startDate, pageInfo.endDate, pageInfo.view]);
 
     // 랜더링 최초실행
     useEffect(() => {
@@ -66,14 +69,23 @@ function Order() {
     // 검색
     const orderSearch = (e) => {
         e.preventDefault();
+
+
+        let processedKeyword = keyword;
+
+        // orderNum 검색일 때 '-' 제거
+        if (key == 'orderNum') {
+            processedKeyword = keyword.replaceAll('-', '');
+        }
+
         setPageInfo(prev => ({
             ...prev,
             page: 1,
             key: key,
-            keyword: keyword ,
-            status : '',
-            startDate : '',
-            endDate : ''
+            keyword: processedKeyword ,
+            status : status,
+            startDate : startDate,
+            endDate : endDate
         }));
     };
 
@@ -86,6 +98,7 @@ function Order() {
 
     //  저장/수정 처리 함수
     const handleSaveOrUpdate = async (formData) => {
+    console.log("최종 전송 데이터", formData);
         if (selectedOrder) {
             // 수정 모드
             console.log("수정 실행", formData);
@@ -123,8 +136,30 @@ function Order() {
     }
 
     //주문상세 페이지 토글 열고닫기
-    const toggleRow = (orderId) => {
-        setOpenRow(prev => (prev === orderId ? null : orderId));
+    const toggleRow = async (orderId) => {
+        if (openRow === orderId) {
+            setOpenRow(null);
+            return;
+        }
+
+    // 없을 때만 호출 (캐싱)
+    if (!orderItemMap[orderId]) {
+        try {
+            const res = await getOrderDetail(orderId);
+            console.log(res.data);
+            const data = res?.data?.orderItemDtos ?? [];
+
+            setOrderItemMap(prev => ({
+                ...prev,
+                [orderId]: data
+            }));
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        setOpenRow(orderId);
     };
 
 
@@ -136,6 +171,7 @@ function Order() {
         // 다가져오면 가져온 데이터 전달하여 상태저장
         setCustomers(customerRes.data);
         setProducts(productRes.data);
+
     };
 
     // 주문번호 출력시 하이픈 표시 함수
@@ -172,7 +208,7 @@ function Order() {
                         value={key}
                         onChange={e => setKey(e.target.value)}
                     >
-                        <option value="orderId">주문번호</option>
+                        <option value="orderNum">주문번호</option>
                         <option value="customerName">거래처명</option>
                     </select>
 
@@ -188,11 +224,11 @@ function Order() {
                     {/* 상태 검색 */}
                     <select value={status} onChange={e => setStatus(e.target.value)}>
                         <option value="">상태 전체</option>
-                        <option value="READY">대기</option>
-                        <option value="READY">승인</option>
-                        <option value="READY">출고</option>
-                        <option value="READY">배송완료</option>
-                        <option value="COMPLETE">취소</option>
+                        <option value="대기">대기</option>
+                        <option value="승인">승인</option>
+                        <option value="출고">출고</option>
+                        <option value="배송완료">배송완료</option>
+                        <option value="취소">취소</option>
                     </select>
 
                     {/* 기간 검색 */}
@@ -200,7 +236,7 @@ function Order() {
                     ~
                     <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
 
-                    <button type="submit">검색</button>
+                    <button type="submit" onClick={orderSearch}>검색</button>
                 </form>
 
                 <button onClick={handleOpenRegister}>주문 등록</button>
@@ -228,7 +264,7 @@ function Order() {
                                 <td>{formatOrderNum(item.orderNum)}</td>
                                 <td>{item.customerName}</td>
                                 <td>{formatDateTime(item.orderDt)}</td>
-                                <td>{item.price}원</td>
+                                <td>{Number(item.totalPrice).toLocaleString('ko-KR')}원</td>
                                 <td>{item.status}</td>
                                 <td>
                                     <button onClick={(e) => { e.stopPropagation(); handleOpenUpdate(item); }}>주문승인</button>
@@ -242,9 +278,9 @@ function Order() {
                                     <td colSpan="6">
                                         <div className="order-detail-box">
 
-                                            {item.orderItemDtos && item.orderItemDtos.map(detail => (
+                                            {orderItemMap[item.orderId]?.map(detail => (
                                                 <div key={detail.orderItemId} className="detail-row">
-                                                    └ {detail.productName} / {detail.quantity}개 / {detail.price}원
+                                                    └ {detail.productName} / {detail.quantity}개 / {Number(detail.price).toLocaleString('ko-KR')}원
                                                 </div>
                                             ))}
 

@@ -34,10 +34,10 @@ public class OrderController {
                           @RequestParam String startDate, @RequestParam String endDate , @RequestParam int view){
 
 
-        System.out.println("실행한다 주문 조회 컨트롤러.... ");
+        System.out.println("실행한다 주문 조회 컨트롤러.... "+key+keyword);
 
         PageDto result = orderService.getAll( page , key, keyword , status, startDate, endDate ,view);
-        System.out.println("컨트롤러 결과값 >>>>>>"+result);
+        System.out.println("컨트롤러 주문 조회 결과값 >>>>>>"+result);
         return result;
         //System.out.println("컨트롤러회원조회 : "+result);
 
@@ -47,7 +47,7 @@ public class OrderController {
     // 주문 1개 상세 조회
     @GetMapping("/getinfo")
     public OrderDto getInfo(@RequestParam int orderId){
-        //System.out.println("컨트롤러 mno : "+mno);
+
         OrderDto result = orderService.getInfo(orderId);
         return result;
     }

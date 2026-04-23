@@ -7,16 +7,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItemEntity, Integer> {
     @Query
             (value="select * from order_item where "+
-                    " if( :keyword = '' , true , "+
-                    " if( :key = 'customerName' , customer_name like %:keyword% , "+
-                    " if( :key = 'phone' , phone like %:keyword% , true )))" +
-                    " and delete_state = 'N' "
+                    " orderId = (:orderId) "
                     , nativeQuery = true)
-    Page<OrderItemEntity> findByorderItemserch(String key, String keyword, Pageable pageable);
+    List<OrderItemEntity> findByorderItemserch(int orderId);
 
 
 }

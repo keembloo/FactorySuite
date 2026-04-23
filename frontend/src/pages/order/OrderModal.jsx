@@ -97,8 +97,13 @@ console.log(" product:", product);
 
         // 부모 컴포넌트 (order)로 데이터 전달
         onSave?.({
-            customerId ,
-            orderItemDtos
+            customerId: Number(customerId),
+            totalPrice: Number(totalPrice),
+                orderItemDtos: orderItemDtos.map(item => ({
+                    productId: item.productId,
+                    quantity: item.quantity,
+                    price: item.price
+                }))
         });
         // 초기화
         setOpen(false);

@@ -36,6 +36,10 @@ public class OrderEntity extends BaseTime{
     @Column(name = "delete_state", nullable = false)
     private String deleteState;
 
+    // 주문 총금액
+    @Column(name = "total_price", nullable = false)
+    private int totalPrice;
+
 
     // 거래처번호
     @ManyToOne(fetch = FetchType.LAZY)
@@ -55,6 +59,7 @@ public class OrderEntity extends BaseTime{
                 .status(this.status)
                 .deleteState(this.deleteState)
                 .orderDt(this.getCreatedDt())
+                .totalPrice(this.totalPrice)
                 .customerId(
                         this.customerEntity != null ? this.customerEntity.getCustomerId() : null
                 )

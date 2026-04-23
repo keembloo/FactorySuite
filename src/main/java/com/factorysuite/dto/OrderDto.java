@@ -20,6 +20,7 @@ public class OrderDto {
     private LocalDateTime orderDt; // 주문일시
     private int customerId; // 거래처번호
     private String customerName; //거래처이름
+    private int totalPrice; // 총금액
 
     private List<OrderItemDto> orderItemDtos;
 
@@ -29,6 +30,7 @@ public class OrderDto {
                 .orderNum(this.orderNum)
                 .status(this.status)
                 .deleteState(this.deleteState)
+                .totalPrice(this.totalPrice)
                 .build();
     }
 

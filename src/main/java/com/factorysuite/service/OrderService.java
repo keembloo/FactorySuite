@@ -5,9 +5,12 @@ import com.factorysuite.dto.OrderItemDto;
 import com.factorysuite.dto.PageDto;
 import com.factorysuite.entity.CustomerEntity;
 import com.factorysuite.entity.OrderEntity;
+import com.factorysuite.entity.ProductEntity;
+import com.factorysuite.entity.OrderItemEntity;
 import com.factorysuite.repository.CustomerRepository;
 import com.factorysuite.repository.OrderItemRepository;
 import com.factorysuite.repository.OrderRepository;
+import com.factorysuite.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +37,8 @@ public class OrderService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
 
     //  등록
     @Transactional
@@ -65,7 +70,21 @@ public class OrderService {
 
             // 주문 저장
             OrderEntity savedOrder = orderRepository.save(entity);
-            if (savedOrder.getOrderId() >= 1){return true;}
+            // 주문 저장 성공시 주문 상세 내역 저장
+            for (OrderItemDto dto : orderDto.getOrderItemDtos()) {
+                OrderItemEntity item = new OrderItemEntity();
+                item.setOrderEntity(savedOrder);
+
+                // 상품 연결
+                ProductEntity product = productRepository.findById(dto.getProductId())
+                        .orElseThrow(() -> new RuntimeException("상품 없음"));
+
+                item.setProductEntity(product);
+                item.setQuantity(dto.getQuantity());
+                orderItemRepository.save(item);
+            }
+
+            return true;
         }
 
         return false;
@@ -140,6 +159,8 @@ public class OrderService {
                                     .orderItemId(orderItemEntity.getOrderItemId())        //주문상세번호
                                     .quantity(orderItemEntity.getQuantity())          //주문수량
                                     .productId(orderItemEntity.getProductEntity().getProductId())        //제품번호
+                                    .productName(orderItemEntity.getProductEntity().getProductName()) //제품명
+                                    .price(orderItemEntity.getProductEntity().getPrice())   // 가격
                                     .orderId(orderItemEntity.getOrderEntity().getOrderId())      //주문번호
                                     .build()
                     )

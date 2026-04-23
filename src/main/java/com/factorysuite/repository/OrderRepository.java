@@ -15,7 +15,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
                     "join customer c on o.customer_id = c.customer_id " +
                     "where (:keyword = '' or " +
                     " (:key = 'customerName' and c.customer_name like %:keyword%) or " +
-                    " (:key = 'orderId' and cast(o.order_id as char) like %:keyword%) ) " +
+                    " (:key = 'orderNum' and cast(o.order_num as char) like %:keyword%) ) " +
 
                     "and (:status = '' or o.status = :status) " +
 
@@ -30,7 +30,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
 
                                     "where (:keyword = '' or " +
                                     " (:key = 'customerName' and c.customer_name like %:keyword%) or " +
-                                    " (:key = 'orderId' and cast(o.order_id as char) like %:keyword%) ) " +
+                                    " (:key = 'orderNum' and cast(o.order_num as char) like %:keyword%) ) " +
 
                                     "and (:status = '' or o.status = :status) " +
 

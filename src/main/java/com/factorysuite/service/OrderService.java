@@ -47,7 +47,7 @@ public class OrderService {
         // 등록시 삭제여부 기본값 "N"설정
         entity.setDeleteState("N");
         entity.setStatus("대기");
-        System.out.println("orderDto>>>>>>>"+orderDto);
+        //System.out.println("orderDto>>>>>>>"+orderDto);
 
         // 있는 거래처이면 주문내역 저장
         Optional<CustomerEntity> optionalCustomer = customerRepository.findById(orderDto.getCustomerId());
@@ -62,7 +62,7 @@ public class OrderService {
             LocalDateTime start = today.atStartOfDay();
             LocalDateTime end = today.atTime(23, 59, 59);
             int orderCount = orderRepository.countByToday(start , end);
-            System.out.println("서비스 orderCount:>>>>>>> "+orderCount);
+            //System.out.println("서비스 orderCount:>>>>>>> "+orderCount);
             // 주문에 주문번호 생성하여 저장
             String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             entity.setOrderNum("ORDMES" + date + String.format("%06d", orderCount + 1));
@@ -94,7 +94,7 @@ public class OrderService {
     @Transactional
     public PageDto getAll(int page, String key, String keyword, String status,
                           String startDate, String endDate, int view){
-        System.out.println("실행한다 주문 조회서비스.... ");
+        //System.out.println("실행한다 주문 조회서비스.... ");
 
         keyword = (keyword == null) ? "" : keyword;
 
@@ -135,7 +135,7 @@ public class OrderService {
                 .totalPage(totalPages)
                 .totalCount(totalCount)
                 .build();
-         System.out.println("주문 조회 서비스>>>>>> :"+pageDto);
+         //System.out.println("주문 조회 서비스>>>>>> :"+pageDto);
 
 
         return pageDto;
@@ -198,7 +198,7 @@ public class OrderService {
     @Transactional
     public boolean orderDelete( int orderId ){
 
-        System.out.println("주문삭제 서비스>>>>>"+orderId);
+        //System.out.println("주문삭제 서비스>>>>>"+orderId);
         Optional<OrderEntity> optionalEntity = orderRepository.findById(orderId); // 회원번호 조회
         if (optionalEntity.isPresent()) { // 있는 회원번호이면
             OrderEntity orderEntity = optionalEntity.get(); // 엔티티에 있는 데이터를 꺼냄

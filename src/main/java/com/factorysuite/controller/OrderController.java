@@ -19,9 +19,9 @@ public class OrderController {
     public boolean orderInsert(@RequestBody OrderDto orderDto) {
 
 
-        System.out.println("컨트롤러실행orderDto"+orderDto);
+        //System.out.println("컨트롤러실행orderDto"+orderDto);
         boolean result = orderService.orderInsert( orderDto );
-        System.out.println("컨트롤러반환orderDto"+orderDto);
+        //System.out.println("컨트롤러반환orderDto"+orderDto);
 
         return result;
     }
@@ -34,10 +34,10 @@ public class OrderController {
                           @RequestParam String startDate, @RequestParam String endDate , @RequestParam int view){
 
 
-        System.out.println("실행한다 주문 조회 컨트롤러.... "+key+keyword);
+        //System.out.println("실행한다 주문 조회 컨트롤러.... "+key+keyword);
 
         PageDto result = orderService.getAll( page , key, keyword , status, startDate, endDate ,view);
-        System.out.println("컨트롤러 주문 조회 결과값 >>>>>>"+result);
+        //System.out.println("컨트롤러 주문 조회 결과값 >>>>>>"+result);
         return result;
         //System.out.println("컨트롤러회원조회 : "+result);
 
@@ -57,7 +57,6 @@ public class OrderController {
     @PutMapping("/put")
     public boolean orderUpdate(@RequestParam int orderId){
         boolean result = orderService.orderUpdate(orderId);
-        //System.out.println("컨트롤러 : "+starBugMemberDto);
         return result;
     }
 

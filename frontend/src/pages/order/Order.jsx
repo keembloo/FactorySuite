@@ -57,7 +57,7 @@ function Order() {
 
     // 조회 기능 함수 API연결
     const fetchOrder = () => {
-        console.log("pageInfo:", pageInfo);
+        //console.log("pageInfo:", pageInfo);
         getOrder(pageInfo.page, pageInfo.key , pageInfo.keyword, pageInfo.status,
             pageInfo.startDate, pageInfo.endDate, pageInfo.view )
             .then(res =>
@@ -101,7 +101,7 @@ function Order() {
     console.log("최종 전송 데이터", formData);
 
         // 등록 모드
-        console.log("등록 실행", formData);
+        //console.log("등록 실행", formData);
         await createOrder(formData);
 
         setOpen(false);
@@ -110,8 +110,8 @@ function Order() {
 
     //  주문승인시 수정 처리 함수
     const handleUpdate = async (orderId) => {
-        console.log("최종 전송 데이터", orderId);
-        console.log("수정 실행", orderId);
+        //console.log("최종 전송 데이터", orderId);
+        //console.log("수정 실행", orderId);
         await putOrder(orderId);
         fetchOrder();
     };
@@ -119,13 +119,13 @@ function Order() {
 
     // 주문 취소 (삭제)판매 상태 함수
     const orderDelete = (orderId)=>{
-        console.log("주문삭제");
+        //console.log("주문삭제");
         if(window.confirm('정말 삭제 하시겠습니까.')) {
 
             deleteOrder(orderId)
             .then(res =>
                 {
-                    console.log(res.data);
+                    //console.log(res.data);
                     fetchOrder();
                 }
             ).catch(err => console.error(err));
@@ -134,7 +134,7 @@ function Order() {
 
     // 페이지 변경 함수
     const onPageSelect = (e , value ) =>{
-        console.log(value);
+        //console.log(value);
         pageInfo.page = value; // 클릭한 페이지번호로 변경
         setPageInfo({ ...pageInfo });   // 새로고침 [ 상태변수의 주소값이 바뀌면 재랜더링 ]
     }
@@ -150,7 +150,7 @@ function Order() {
     if (!orderItemMap[orderId]) {
         try {
             const res = await getOrderDetail(orderId);
-            console.log(res.data);
+            //console.log(res.data);
             const data = res?.data?.orderItemDtos ?? [];
 
             setOrderItemMap(prev => ({
@@ -169,7 +169,7 @@ function Order() {
 
     // 주문등록시 셀렉트창 조회 비동기함수
     const fetchData = async () => {
-    console.log("fetchData 실행됨");
+    //console.log("fetchData 실행됨");
         const customerRes = await getCustomerList(); // 거래처 리스트 가져오기
         const productRes = await getProductList();  // 다가져오면 제품 리스트 가져오기
         // 다가져오면 가져온 데이터 전달하여 상태저장
@@ -271,8 +271,11 @@ function Order() {
                                 <td>{Number(item.totalPrice).toLocaleString('ko-KR')}원</td>
                                 <td>{item.status}</td>
                                 <td>
+                                {item.status === '대기' &&
+                                (<>
                                     <button onClick={(e) => { e.stopPropagation(); handleUpdate(item.orderId); }}>주문승인</button>
                                     <button onClick={(e) => { e.stopPropagation(); orderDelete(item.orderId); }}>주문취소</button>
+                                </>)}
                                 </td>
                             </tr>
 

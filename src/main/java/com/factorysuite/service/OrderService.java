@@ -178,18 +178,17 @@ public class OrderService {
         }
         return null;
     }
-/*
+
     // 수정
     @Transactional
-    public boolean productUpdate( ProductDto productDto ){
+    public boolean orderUpdate( int orderId ){
 
-        Optional<ProductEntity> optionalEntity
-                = productRepository.findById(productDto.getProductId());    // dto에 담긴 번호를 조회
+        Optional<OrderEntity> optionalEntity
+                = orderRepository.findById(orderId);    // dto에 담긴 번호를 조회
         if(optionalEntity.isPresent()){ // 있는 번호이면
-            ProductEntity productEntity = optionalEntity.get(); // 엔티티에 있는 데이터를 꺼냄
-            productEntity.setProductName(productDto.getProductName());  // dto에 있는 데이터를 엔티티 각 필드에 맞게 저장
-            productEntity.setPrice(productDto.getPrice());
-            productEntity.setCategory(productDto.getCategory());
+            OrderEntity orderEntity = optionalEntity.get(); // 엔티티에 있는 데이터를 꺼냄
+            orderEntity.setStatus("승인");  // dto에 있는 데이터를 엔티티 각 필드에 맞게 저장
+
             return true;
         }
         return false;
@@ -197,17 +196,17 @@ public class OrderService {
 
     //삭제
     @Transactional
-    public boolean productDelete( int productId ){
+    public boolean orderDelete( int orderId ){
 
-        System.out.println("제품삭제 서비스>>>>>"+productId);
-        Optional<ProductEntity> optionalEntity = productRepository.findById(productId); // 회원번호 조회
+        System.out.println("주문삭제 서비스>>>>>"+orderId);
+        Optional<OrderEntity> optionalEntity = orderRepository.findById(orderId); // 회원번호 조회
         if (optionalEntity.isPresent()) { // 있는 회원번호이면
-            ProductEntity productEntity = optionalEntity.get(); // 엔티티에 있는 데이터를 꺼냄
-            productEntity.setDeleteState("Y");  // 삭제 여부를 "Y"로 저장
+            OrderEntity orderEntity = optionalEntity.get(); // 엔티티에 있는 데이터를 꺼냄
+            orderEntity.setDeleteState("Y");  // 삭제 여부를 "Y"로 저장
             return true;
         }
         return false;
     }
 
- */
+
 }

@@ -51,12 +51,12 @@ public class OrderController {
         OrderDto result = orderService.getInfo(orderId);
         return result;
     }
-/*
+
 
     // 주문 수정
     @PutMapping("/put")
-    public boolean customerUpdate(@RequestBody OrderDto orderDto){
-        boolean result = orderService.orderUpdate(orderDto);
+    public boolean orderUpdate(@RequestParam int orderId){
+        boolean result = orderService.orderUpdate(orderId);
         //System.out.println("컨트롤러 : "+starBugMemberDto);
         return result;
     }
@@ -71,5 +71,5 @@ public class OrderController {
         boolean result = orderService.orderDelete(orderId);
         return result;
     }
-*/
+
 }

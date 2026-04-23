@@ -22,7 +22,8 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
                     "and (:startDate is null or o.created_dt >= :startDate) " +
                     "and (:endDate is null or o.created_dt <= :endDate) " +
 
-                    "and c.delete_state = 'N' ",
+                    "and c.delete_state = 'N' " +
+                    "and o.delete_state = 'N' ",
 
                     countQuery =
                             "select count(*) from orders o " +
@@ -37,7 +38,8 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
                                     "and (:startDate is null or o.created_dt >= :startDate) " +
                                     "and (:endDate is null or o.created_dt <= :endDate) " +
 
-                                    "and c.delete_state = 'N' ",
+                                    "and c.delete_state = 'N' " +
+                                    "and o.delete_state = 'N' ",
 
                     nativeQuery = true)
     Page<OrderEntity> findByorderserch(String key, String keyword,

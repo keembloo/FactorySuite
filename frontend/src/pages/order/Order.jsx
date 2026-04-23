@@ -96,23 +96,28 @@ function Order() {
     };
 
 
-    //  저장/수정 처리 함수
-    const handleSaveOrUpdate = async (formData) => {
+    //  저장 처리 함수
+    const handleSave = async (formData) => {
     console.log("최종 전송 데이터", formData);
-        if (selectedOrder) {
-            // 수정 모드
-            console.log("수정 실행", formData);
-            await putOrder(formData);
-        } else {
-            // 등록 모드
-            console.log("등록 실행", formData);
-            await createOrder(formData);
-        }
-            setOpen(false);
-            fetchOrder();
+
+        // 등록 모드
+        console.log("등록 실행", formData);
+        await createOrder(formData);
+
+        setOpen(false);
+        fetchOrder();
     };
 
-    // 주문 (삭제)판매 상태 함수
+    //  주문승인시 수정 처리 함수
+    const handleUpdate = async (orderId) => {
+        console.log("최종 전송 데이터", orderId);
+        console.log("수정 실행", orderId);
+        await putOrder(orderId);
+        fetchOrder();
+    };
+
+
+    // 주문 취소 (삭제)판매 상태 함수
     const orderDelete = (orderId)=>{
         console.log("주문삭제");
         if(window.confirm('정말 삭제 하시겠습니까.')) {
@@ -121,7 +126,6 @@ function Order() {
             .then(res =>
                 {
                     console.log(res.data);
-                    setPageDto(res.data);
                     fetchOrder();
                 }
             ).catch(err => console.error(err));
@@ -267,7 +271,7 @@ function Order() {
                                 <td>{Number(item.totalPrice).toLocaleString('ko-KR')}원</td>
                                 <td>{item.status}</td>
                                 <td>
-                                    <button onClick={(e) => { e.stopPropagation(); handleOpenUpdate(item); }}>주문승인</button>
+                                    <button onClick={(e) => { e.stopPropagation(); handleUpdate(item.orderId); }}>주문승인</button>
                                     <button onClick={(e) => { e.stopPropagation(); orderDelete(item.orderId); }}>주문취소</button>
                                 </td>
                             </tr>
@@ -303,7 +307,7 @@ function Order() {
             <OrderModal
                 open={open}
                 setOpen={setOpen}
-                onSave={handleSaveOrUpdate}
+                onSave={handleSave}
                 data={selectedOrder}
                 customers={customers}
                 products={products}

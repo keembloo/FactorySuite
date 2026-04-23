@@ -17,8 +17,10 @@ export const createOrder = (data) =>
     api.post('/order/post', data);
 
 // 수정
-export const putOrder = (data) =>
-    api.put('/order/put', data);
+export const putOrder = (orderId) =>
+    api.put('/order/put', null, {
+        params: { orderId }
+    });
 
 // 삭제
 export const deleteOrder = (orderId) =>

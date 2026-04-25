@@ -22,6 +22,7 @@ function Header(){
                         <li onClick={() => navigate('/customer')}> 거래처관리</li>
                         <li onClick={() => navigate('/product')}>제품관리</li>
                         <li onClick={() => navigate('/order')}>주문관리</li>
+                        <li onClick={() => navigate('/process')}>공정정의</li>
                         <li>생산지시관리</li>
                         <li>재고관리</li>
                     </ul>

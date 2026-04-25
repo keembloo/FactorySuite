@@ -1,0 +1,133 @@
+import { useState, useEffect } from 'react';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import { Select, MenuItem } from '@mui/material';
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 420,
+    bgcolor: 'background.paper',
+    borderRadius: 2,
+    boxShadow: 24,
+    p: 4,
+};
+
+function ProcessModal({ open, setOpen, onSave , data }) {
+    const [form, setForm] = useState({
+        processId: '',
+        processName: '',
+        processCode: '',
+        inspectionYn: '',
+        useYn: '',
+    });
+
+    useEffect(() => {
+        if (data) { // 수정 시: 넘어온 데이터로 셋팅
+            setForm({
+                processId: data.processId,
+                processName: data.processName,
+                processCode: data.processCode,
+                inspectionYn: data.inspectionYn,
+                useYn: data.useYn
+            });
+        } else {
+            setForm({ processId: '', processName: '', processCode: '', inspectionYn: '' , useYn: '' }); // 등록 시: 초기화
+        }
+    }, [data, open]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleSave = () => {
+        if (!form.processName.trim()) {
+            alert('공정 이름을 입력하세요.');
+            return;
+        }
+
+        onSave?.(form);   // 부모에게 데이터 전달
+        setOpen(false);
+
+        // 입력값 초기화
+        setForm({
+            processName: '',
+            processCode: '',
+            inspectionYn: '',
+            useYn: ''
+        });
+    };
+
+    return (
+        <Modal open={open} onClose={handleClose}>
+            <Box sx={style}>
+                <Typography variant="h6" mb={3}>
+                    {data ? '공정 정보 수정' : '공정 신규 등록'}
+                </Typography>
+
+                <Stack spacing={2}>
+                    <TextField
+                        label="공정 이름"
+                        name="processName"
+                        value={form.processName}
+                        onChange={handleChange}
+                        fullWidth
+                    />
+
+                    <TextField
+                        label="공정 코드"
+                        name="processCode"
+                        value={form.processCode}
+                        onChange={handleChange}
+                        fullWidth
+                    />
+                    <Select
+                        name="inspectionYn"
+                        value={form.inspectionYn}
+                        onChange={handleChange}
+                        fullWidth
+                        displayEmpty
+                    >
+                        <MenuItem value="">품질 검사 공정여부 선택</MenuItem>
+                        <MenuItem value="Y">검사</MenuItem>
+                        <MenuItem value="N">미검수</MenuItem>
+                    </Select>
+
+                    <Select
+                        name="useYn"
+                        value={form.useYn}
+                        onChange={handleChange}
+                        fullWidth
+                        displayEmpty
+                    >
+                        <MenuItem value="">공정 사용여부 선택</MenuItem>
+                        <MenuItem value="Y">사용</MenuItem>
+                        <MenuItem value="N">미사용</MenuItem>
+                    </Select>
+
+                    <Stack direction="row" spacing={1} justifyContent="flex-end" mt={2}>
+                        <Button variant="outlined" onClick={handleClose}>
+                            취소
+                        </Button>
+                        <Button variant="contained" onClick={handleSave}>
+                            저장
+                        </Button>
+                    </Stack>
+                </Stack>
+            </Box>
+        </Modal>
+    );
+}
+
+export default ProcessModal;

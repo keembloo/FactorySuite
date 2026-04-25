@@ -6,6 +6,7 @@ import ItemManage from './pages/item/ItemManage';
 import Customer from './pages/customer/Customer';
 import Product from './pages/product/Product';
 import Order from './pages/order/Order';
+import Process from './pages/process/Process';
 import Header from './components/Header';
 import './main.css';
 
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                         <Route path="customer" element={<Customer />} />
                         <Route path="product" element={<Product />} />
                         <Route path="order" element={<Order />} />
+                        <Route path="process" element={<Process />} />
                     </Routes>
                 </>
             }

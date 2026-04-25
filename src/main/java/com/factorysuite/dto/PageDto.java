@@ -17,6 +17,7 @@ public class PageDto {
     List<CustomerDto> customerDtos; // 거래처 페이징처리
     List<ProductDto> productDtos; //  제품  페이징처리
     List<OrderDto> orderDtos; //  주문  페이징처리
+    List<ProcessDto> processDtos; //  공정 페이징처리
 
     //2. 반환된 총 페이지수
     private int totalPage;

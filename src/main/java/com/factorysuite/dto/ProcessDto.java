@@ -19,6 +19,7 @@ public class ProcessDto {
     private String useYn; // 공정 사용여부
     private LocalDateTime createdDt; // 공정 생성일
     private LocalDateTime updatedDt; // 공정 수정일
+    private String deleteState; //삭제여부
 
     public ProcessEntity processToEntity(){
         return ProcessEntity.builder()

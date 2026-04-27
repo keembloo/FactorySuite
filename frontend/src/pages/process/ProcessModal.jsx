@@ -23,7 +23,6 @@ function ProcessModal({ open, setOpen, onSave , data }) {
     const [form, setForm] = useState({
         processId: '',
         processName: '',
-        processCode: '',
         inspectionYn: '',
         useYn: '',
     });
@@ -33,12 +32,11 @@ function ProcessModal({ open, setOpen, onSave , data }) {
             setForm({
                 processId: data.processId,
                 processName: data.processName,
-                processCode: data.processCode,
                 inspectionYn: data.inspectionYn,
                 useYn: data.useYn
             });
         } else {
-            setForm({ processId: '', processName: '', processCode: '', inspectionYn: '' , useYn: '' }); // 등록 시: 초기화
+            setForm({ processId: '', processName: '', inspectionYn: '' , useYn: '' }); // 등록 시: 초기화
         }
     }, [data, open]);
 
@@ -63,7 +61,6 @@ function ProcessModal({ open, setOpen, onSave , data }) {
         // 입력값 초기화
         setForm({
             processName: '',
-            processCode: '',
             inspectionYn: '',
             useYn: ''
         });
@@ -85,13 +82,6 @@ function ProcessModal({ open, setOpen, onSave , data }) {
                         fullWidth
                     />
 
-                    <TextField
-                        label="공정 코드"
-                        name="processCode"
-                        value={form.processCode}
-                        onChange={handleChange}
-                        fullWidth
-                    />
                     <Select
                         name="inspectionYn"
                         value={form.inspectionYn}

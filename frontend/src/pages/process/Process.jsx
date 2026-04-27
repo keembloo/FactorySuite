@@ -8,7 +8,7 @@ import useStore from '../../store/useStore';
 import ProcessModal from './ProcessModal'
 
 function Process(){
-    const [key, setKey] = useState('');
+    const [key, setKey] = useState('processName');
     const [keyword, setKeyword] = useState('');
     const [list, setList] = useState([]);
     const [open, setOpen] = useState(false);
@@ -26,13 +26,13 @@ function Process(){
 
     // 페이징처리 위한 페이지 번호 상태변수 전달할 객체
     const [ pageInfo , setPageInfo ] = useState({
-        page : 1 , key : '' , keyword : '' , view : 10 // view 초기값 10
+        page : 1 , key : 'processName' , keyword : '' , view : 10 , useYn :'' // view 초기값 10
     });
 
     // 처음 전체조회
     useEffect(() => {
         fetchProcess();
-    }, [pageInfo.page, pageInfo.key, pageInfo.keyword, pageInfo.view]);
+    }, [pageInfo.page, pageInfo.key, pageInfo.keyword,pageInfo.useYn, pageInfo.view ]);
 
 
     // 검색
@@ -43,16 +43,16 @@ function Process(){
             page: 1,
             key: key ,
             keyword: keyword ,
-            view: view
+            useYn: useYn
         }));
     };
 
     // 조회 함수
     const fetchProcess = () => {
-        console.log("pageInfo:", pageInfo);
-        getProcess(pageInfo.page, pageInfo.key, pageInfo.keyword, pageInfo.view )
+        console.log("조회 함수 pageInfo:", pageInfo);
+        getProcess(pageInfo.page, pageInfo.key, pageInfo.keyword, pageInfo.view , pageInfo.useYn)
         .then(res =>
-            {console.log(res.data); setPageDto(res.data);})
+            {console.log("fetchProcess 반환값 >>",res.data); setPageDto(res.data);})
         .catch(err => console.error(err));
     };
 
@@ -84,7 +84,7 @@ function Process(){
     };
 
     // 제품 (삭제)판매 상태 함수
-    const processDelete = (productId)=>{
+    const processDelete = (processId)=>{
         console.log("공정삭제");
         if(window.confirm('정말 삭제 하시겠습니까.')) {
 
@@ -130,6 +130,16 @@ function Process(){
                             onChange={e => setKeyword(e.target.value)}
                         />
 
+                        <select
+                            name="useYn"
+                            value={useYn}
+                            onChange={e => setUseYn(e.target.value)}
+                        >
+                            <option value="">사용여부 전체</option>
+                            <option value="Y">사용</option>
+                            <option value="N">미사용</option>
+                        </select>
+
                         <button type="submit">검색</button>
                     </form>
                     <button onClick={handleOpenRegister}>공정 등록</button>
@@ -143,7 +153,7 @@ function Process(){
                                 <th>번호</th>
                                 <th>공정코드</th>
                                 <th>공정명</th>
-                                <th>검사여부</th>
+                                <th>품질검사 공정여부</th>
                                 <th>사용여부</th>
                                 <th>비고</th>
                             </tr>
@@ -153,12 +163,12 @@ function Process(){
                         {pageDto.processDtos && pageDto?.processDtos?.map((item, idx) => (
                             <tr key={item.processId}>
                                 <td>{item.processId}</td>
-                                <td>{item.processName}</td>
                                 <td>{item.processCode}</td>
-                                <td>{item.inspectionYn}</td>
-                                <td>{item.useYn}</td>
+                                <td>{item.processName}</td>
+                                <td>{item.inspectionYn==='Y'? '검사' : '미검사'}</td>
+                                <td>{item.useYn==='Y'? '사용' : '미사용'}</td>
                                 <td>
-                                    <button onClick={() => handleOpenUpdate(item)}>사용전환</button>
+                                    <button onClick={() => handleOpenUpdate(item)}>수정</button>
                                     <button onClick={() => processDelete(item.processId)}>삭제</button>
                                 </td>
                             </tr>

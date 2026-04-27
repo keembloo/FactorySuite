@@ -1,13 +1,13 @@
 import api from './axios';
 
 // 전체 조회 + 검색
-export const getProcess = (page, keyword, view) =>
+export const getProcess = (page, key, keyword, view ,useYn) =>
     api.get('/process/get', {
-        params: { page, keyword, view }
+        params: { page, key, keyword, view ,useYn }
     }
 );
 
-// 제품 등록
+// 공정 등록
 export const createProcess = (data) =>
     api.post('/process/post', data);
 

@@ -21,23 +21,24 @@ public class ProcessController{
 
 
         boolean result = processService.processInsert( processDto );
-        System.out.println("컨트롤러 등록 processDto"+processDto);
+        System.out.println("컨트롤러 공정 등록 processDto"+processDto);
 
         return result;
     }
-/*
+
 
     // 모든 공정 조회
     @GetMapping("/get")
-    public PageDto getAll(@RequestParam int page,
+    public PageDto getAll(@RequestParam int page, @RequestParam String key,
                           @RequestParam String keyword , @RequestParam int view,
-                          @RequestParam  String category, @RequestParam String forSale){
-        System.out.println("실행한다 조회 컨트롤러.... ");
-        return processService.getAll( page , keyword , view, category , forSale);
+                          @RequestParam String useYn ){
+        System.out.println("실행한다 공정 조회 컨트롤러.... ");
+        System.out.println("검색내용 : >>>>"+key+keyword);
+        return processService.getAll( page , key,  keyword , view , useYn);
 
 
     }
-
+/*
     // 제품 리스트 조회
     @GetMapping("/getlist")
     public List<ProductDto> getList( ){
@@ -47,24 +48,25 @@ public class ProcessController{
 
 
     }
+    */
 
     // 공정 수정
     @PutMapping("/put")
     public boolean processUpdate(@RequestBody ProcessDto processDto){
+        System.out.println("공정 수정 컨트롤러 >>>"+processDto);
         boolean result = processService.processUpdate(processDto);
         return result;
     }
 
 
-
     // 공정 삭제
     @DeleteMapping("/delete")
     public boolean processDelete(@RequestParam int processId){
-        System.out.println("컨트롤러 : "+processId);
+        System.out.println("컨트롤러 공정 삭제 : "+processId);
         boolean result = processService.processDelete(processId);
         return result;
     }
-*/
+
 
 
 }

@@ -24,7 +24,7 @@ public class ProcessEntity extends BaseTime{
     private String processName;
 
     // 공정코드
-    @Column(name = "process_code", nullable = false)
+    @Column(name = "process_code" , nullable = true)
     private String processCode;
 
     // 검사여부
@@ -35,6 +35,9 @@ public class ProcessEntity extends BaseTime{
     @Column(name = "use_yn", nullable = false)
     private String useYn;
 
+    //삭제여부
+    @Column(name="delete_state")
+    private String deleteState;
 
     public ProcessDto processToDto() {
         // 공정 등록, 수정, 삭제를 위한 dto 변환
@@ -46,6 +49,7 @@ public class ProcessEntity extends BaseTime{
                 .useYn(this.useYn)
                 .createdDt(this.getCreatedDt())
                 .updatedDt(this.getUpdatedDt())
+                .deleteState(this.deleteState)
                 .build();
 
     }

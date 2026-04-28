@@ -36,11 +36,12 @@ public class ProcessService {
         System.out.println("서비스 공정 등록 빈값확인 >>>>"+findProcessName.isEmpty());
         if (findProcessName.isEmpty()) {
             // 동시성 문제 해결 하기 위하여 먼저 저장후 공정코드 추가 저장
-            processDto.setDeleteState("N");
+            System.out.println("processDto.getDeleteState    :   " +processDto.getDeleteState());
             ProcessEntity saveEntity = processRepository.save(processDto.processToEntity());
             // 저장후 id 번호 가져와서 공정 코드에 P001로 추가하여 다시 저장
             String code = String.format("P%03d", saveEntity.getProcessId());
             saveEntity.setProcessCode(code);
+            saveEntity.setDeleteState("N"); //삭제여부 'N' 추가 저장
             ProcessEntity processEntity = processRepository.save(saveEntity);
             if (processEntity.getProcessId() >= 1) {
                 return true;
@@ -87,29 +88,10 @@ public class ProcessService {
                 .totalPage(totalPages)
                 .totalCount(totalCount)
                 .build();
-        // System.out.println("서비스 :"+pageDto);
-
 
         return pageDto;
     }
 
-/*
-    // 제품 리스트 조회
-    @Transactional
-    public List<ProcessDto> getList( ){
-        System.out.println("실행한다 서비스.... ");
-        // 1. 전체 조회
-        List<ProcessEntity> processEntities = processRepository.findByprocessList();
-        // 2. DTO 리스트 생성
-        List<ProcessDto> processDtos = new ArrayList<>();
-
-        // 3. entity → dto 변환
-        for (ProcessEntity e : processEntities) {
-            processDtos.add(e.processToDto());
-        }
-        return processDtos;
-    }
-*/
 
     // 수정
     @Transactional

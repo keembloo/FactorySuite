@@ -38,17 +38,6 @@ public class ProcessController{
 
 
     }
-/*
-    // 제품 리스트 조회
-    @GetMapping("/getlist")
-    public List<ProductDto> getList( ){
-        System.out.println("실행한다 조회 컨트롤러.... ");
-        return productService.getList();
-        //System.out.println("컨트롤러회원조회 : "+result);
-
-
-    }
-    */
 
     // 공정 수정
     @PutMapping("/put")

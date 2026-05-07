@@ -7,6 +7,7 @@ import Customer from './pages/customer/Customer';
 import Product from './pages/product/Product';
 import Order from './pages/order/Order';
 import Process from './pages/process/Process';
+import ProcessFlow from './pages/processFlow/ProcessFlow';
 import Header from './components/Header';
 import './main.css';
 
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                         <Route path="product" element={<Product />} />
                         <Route path="order" element={<Order />} />
                         <Route path="process" element={<Process />} />
+                        <Route path="processFlow" element={<ProcessFlow />} />
                     </Routes>
                 </>
             }

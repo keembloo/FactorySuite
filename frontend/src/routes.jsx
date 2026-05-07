@@ -30,6 +30,7 @@ export default function AppRoutes() {
         <Route path="product" element={<Product />} />
         <Route path="order" element={<Order />} />
         <Route path="process" element={<Process />} />
+        <Route path="processFlow" element={<ProcessFlow />} />
         {/* 필요시 추가 페이지 */}
       </Route>
 

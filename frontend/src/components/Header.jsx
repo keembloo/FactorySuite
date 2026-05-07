@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './header.css';
 
 function Header(){
-    const navigate = useNavigate();   // 🔥 이거 추가
+    const navigate = useNavigate();
 
     return (
 
@@ -23,6 +23,7 @@ function Header(){
                         <li onClick={() => navigate('/product')}>제품관리</li>
                         <li onClick={() => navigate('/order')}>주문관리</li>
                         <li onClick={() => navigate('/process')}>공정정의</li>
+                        <li onClick={() => navigate('/processFlow')}>공정순서</li>
                         <li>생산지시관리</li>
                         <li>재고관리</li>
                     </ul>
